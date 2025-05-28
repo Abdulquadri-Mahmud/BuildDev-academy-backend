@@ -196,3 +196,25 @@ export const deleteCourse = async (req, res) => {
     return res.status(500).json({ message: "Server timeout..." });
   }
 };
+
+export const updateCourse = async (req, res) => {
+  const { id } = req.params;
+  const { courseName, price, category } = req.body;
+
+  try {
+    const existingCourse = await Course.findById(id);
+    if (!existingCourse) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    existingCourse.courseName = courseName || existingCourse.courseName;
+    existingCourse.price = price || existingCourse.price;
+    existingCourse.category = category || existingCourse.category;
+
+    existingCourse.save();
+
+    return res.status(200).json({ message: "Course updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server timeout" });
+  }
+};

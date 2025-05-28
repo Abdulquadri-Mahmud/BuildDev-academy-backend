@@ -5,6 +5,7 @@ import {
   getCourseById,
   enrollForCourses,
   deleteCourse,
+  updateCourse,
 } from "../controllers/courseController.js";
 import { verifyToken, verifyRole } from "../middlewares/checkToken.js";
 const router = express.Router();
@@ -22,6 +23,17 @@ router.get("/get-course-by-id", getCourseById);
 
 router.get("/get-course-category", getCourseWithCategory);
 
-router.delete("/delete-course/:id", deleteCourse);
+router.delete(
+  "/delete-course/:id",
+  verifyToken,
+  verifyRole("admin"),
+  deleteCourse
+);
+router.put(
+  "/update-course/:id",
+  verifyToken,
+  verifyRole("admin"),
+  updateCourse
+);
 
 export const courseRouter = router;
