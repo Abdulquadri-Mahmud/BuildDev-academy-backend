@@ -34,6 +34,11 @@ const userSchema = mongoose.Schema(
     },
     resetCodeExpires: Date,
 
+    isDeleted: {
+      type: Boolean,
+      default: true,
+    },
+
     courses: [
       {
         type: mongoose.Schema.Types.ObjectId,

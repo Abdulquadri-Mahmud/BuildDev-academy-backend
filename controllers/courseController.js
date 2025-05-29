@@ -197,6 +197,7 @@ export const deleteCourse = async (req, res) => {
   }
 };
 
+//Update Course
 export const updateCourse = async (req, res) => {
   const { id } = req.params;
   const { courseName, price, category } = req.body;
