@@ -25,18 +25,15 @@ app.use(express.json());
 
 
 // Connected to the Database//
-mongoose
-.connect(process.env.CONNECTION_STRING)
-.then(() => {
-  console.log("Database Connected Successfully");
-  //Listen to the PORT
-  app.listen(process.env.PORT, () => {
-    console.log(`Server is listening on port ${process.env.PORT}!`);
-  });
-  })
-  .catch((error) => {
+
+mongoose.connect(process.env.CONNECTION_STRING).then((response) => {
+    console.log('Database Connected!');
+    app.listen(process.env.PORT, () => {
+        console.log(`Server is listening on port ${process.env.PORT}!`);
+    });
+}).catch((error) => {
     console.log(error);
-  });
+});
 
 // if (process.env.NODE_ENV !== "production") {
 //   await seedAdmin();
@@ -53,3 +50,8 @@ app.use("/api/user", loginRoute);
 app.use("/api/user", logoutRoute);
 app.use("/api/course", courseRouter);
 app.use("/api/reset-password", resetPasswordRoute);
+
+// this below is used t pushed to both org and my repo
+
+// git push origin main
+// git push org main
