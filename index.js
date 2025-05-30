@@ -3,6 +3,8 @@ import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+
 //import { seedAdmin } from "../SAMKA-BACKEND_CODE/seedAdmin/seed.js";
 import { courseRouter } from "./routes/courseRoute.js";
 import { loginRoute } from "./routes/loginRoute.js";
@@ -10,22 +12,27 @@ import { logoutRoute } from "./routes/logoutRoute.js";
 import { studentRoute } from "./routes/studentRoute.js";
 import { paymentRoute } from "./routes/paymentRoute.js";
 import { resetPasswordRoute } from "./routes/resetPasswordRoute.js";
+
+dotenv.config();
+
 const app = express();
+
 app.use(helmet());
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
-//Listen to the PORT
-app.listen(process.env.PORT, () => {
-  console.log("Listen.............");
-});
 
-//Connected to the Database//
+//Listen to the PORT
+
+// Connected to the Database//
 mongoose
-  .connect(process.env.CONNECTION_STRING)
-  .then(() => {
-    console.log("Database Connected Successfully");
+.connect(process.env.CONNECTION_STRING)
+.then(() => {
+  console.log("Database Connected Successfully");
+  app.listen(process.env.PORT, () => {
+    console.log(`Server is listening on port ${process.env.PORT}!`);
+  });
   })
   .catch((error) => {
     console.log(error);
@@ -34,6 +41,10 @@ mongoose
 // if (process.env.NODE_ENV !== "production") {
 //   await seedAdmin();
 // }
+
+app.get("/",(req, res,) => {
+    res.send('Hello World');
+});
 
 //Routes
 app.use("/api/registration", studentRoute);
