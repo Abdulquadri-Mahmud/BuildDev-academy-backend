@@ -9,6 +9,7 @@ import { doHash } from "../utilities/passwordHashing.js";
 //Created User Registration Function
 export const registerStudent = async (req, res) => {
   const { firstName, lastName, email, phoneNumber, password } = req.body;
+
   try {
     const { value, error } = registerSchema.validate({
       firstName,
@@ -23,26 +24,27 @@ export const registerStudent = async (req, res) => {
         .status(400)
         .json({ success: false, message: error.details[0].message });
     }
-    //Checking if the email is already exist
+
+    // Check for existing email
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
       return res
         .status(400)
-        .json({ success: false, message: "Email already exist" });
+        .json({ success: false, message: "Email already exists" });
     }
 
-    //Checking if the phone number is exist
+    // Check for existing phone number
     const existingPhoneNumber = await User.findOne({ phoneNumber });
     if (existingPhoneNumber) {
       return res
         .status(400)
-        .json({ success: false, message: "Phonenumber already exist" });
+        .json({ success: false, message: "Phone number already exists" });
     }
 
-    // Hashing password
-    const passwordHash = await doHash(password, 20);
+    // Hash password
+    const passwordHash = await doHash(password, 12); // Consider lowering to 10-12 rounds
 
-    //Saving to Database
+    // Save user to DB
     const student = new User({
       firstName,
       lastName,
@@ -53,14 +55,18 @@ export const registerStudent = async (req, res) => {
     });
 
     await student.save();
-    //result.password = undefined; hide password
-    //Send welcome message to user email
-    await sendWelcomeMailMessage(email, `${firstName + " " + lastName}`);
-    return res
-      .status(200)
-      .json({ success: true, message: "Registration successful" });
+
+    // Send fast response
+    res.status(200).json({ success: true, message: "Registration successful" });
+
+    // Send welcome email in the background
+    sendWelcomeMailMessage(email, `${firstName} ${lastName}`)
+      .then(() => console.log("Welcome email sent"))
+      .catch(err => console.error("Failed to send email:", err));
+
   } catch (error) {
-    console.log(error);
+    console.error("Registration error:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 

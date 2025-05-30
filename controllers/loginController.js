@@ -26,7 +26,7 @@ export const login = async (req, res) => {
     //Checking if the user exist
     const existingUser = await User.findOne({ email }).select("+password");
     if (!existingUser) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found!" });
     }
 
     console.log("Hashed password from DB:", existingUser.password);
