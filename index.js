@@ -23,13 +23,13 @@ app.use(cookieParser());
 app.use(express.json());
 
 
-//Listen to the PORT
 
 // Connected to the Database//
 mongoose
 .connect(process.env.CONNECTION_STRING)
 .then(() => {
   console.log("Database Connected Successfully");
+  //Listen to the PORT
   app.listen(process.env.PORT, () => {
     console.log(`Server is listening on port ${process.env.PORT}!`);
   });
