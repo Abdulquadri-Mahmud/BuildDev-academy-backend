@@ -22,7 +22,7 @@ export const sendWelcomeMailMessage = async (email, firstName, lastName, verifyU
       html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: auto; border-radius: 10px; overflow: hidden; background-color: #ffffff; box-shadow: 0 0 10px rgba(0,0,0,0.1); border: 1px solid #e0e0e0;">
           <div style="background-color: #4CAF50; padding: 20px; color: white; text-align: center;">
-            <img src="https://res.cloudinary.com/dypn7gna0/image/upload/v1748693376/ixmykblx82mino2ww9xa.png" alt="BuildDev Logo" style="height: 60px; margin-bottom: 20px;" />
+            <img src="https://res.cloudinary.com/dypn7gna0/image/upload/v1748696272/gojauquxzfa8axima1hf.png" alt="BuildDev Logo" style="height: 60px; margin-bottom: 20px;" />
             <h1 style="margin: 0; font-size: 24px;">🎉 Welcome to BuildDev Academy!</h1>
           </div>
 
