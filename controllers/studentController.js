@@ -56,7 +56,7 @@ export const registerStudent = async (req, res) => {
     await student.save();
 
     // Create verify URL
-    const verifyUrl = `https://builddev.academy/verify?token=${token}`;
+    const verifyUrl = `http://localhost:5173/verify-email?token=${token}`;
 
     // Send welcome + verification email
     await sendWelcomeMailMessage(email, firstName, lastName, verifyUrl);
