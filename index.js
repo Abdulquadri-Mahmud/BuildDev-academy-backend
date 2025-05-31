@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 
 //import { seedAdmin } from "../SAMKA-BACKEND_CODE/seedAdmin/seed.js";
 import { courseRouter } from "./routes/courseRoute.js";
+import verifyUserEmail from './routes/verifyEmail.route.js'
 import { loginRoute } from "./routes/loginRoute.js";
 import { logoutRoute } from "./routes/logoutRoute.js";
 import { studentRoute } from "./routes/studentRoute.js";
@@ -22,11 +23,8 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
-
-
 // Connected to the Database//
-
-mongoose.connect(process.env.CONNECTION_STRING).then((response) => {
+mongoose.connect(process.env.db).then((response) => {
     console.log('Database Connected!');
     app.listen(process.env.PORT, () => {
         console.log(`Server is listening on port ${process.env.PORT}!`);
@@ -46,13 +44,13 @@ app.get("/",(req, res,) => {
 //Routes
 app.use("/api/registration", studentRoute);
 app.use("/api/make-payment", paymentRoute);
+app.use("/api/user", verifyUserEmail);
 app.use("/api/user", loginRoute);
 app.use("/api/user", logoutRoute);
 app.use("/api/course", courseRouter);
 app.use("/api/reset-password", resetPasswordRoute);
 
 // this below is used t pushed to both org and my repo
-
 
 // git push origin main
 // git push org main

@@ -32,11 +32,22 @@ const userSchema = mongoose.Schema(
     resetCode: {
       type: String,
     },
-    resetCodeExpires: Date,
+    resetCodeExpires: {
+      type: Date,
+    },
 
     isDeleted: {
       type: Boolean,
-      default: true,
+      default: false, // more logical default
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    verificationToken: {
+      type: String,
     },
 
     courses: [
@@ -49,10 +60,11 @@ const userSchema = mongoose.Schema(
     role: {
       type: String,
       enum: ["admin", "student"],
+      default: "student",
     },
   },
   {
-    timeStamp: true,
+    timestamps: true, // corrected spelling
   }
 );
 

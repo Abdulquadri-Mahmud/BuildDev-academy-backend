@@ -1,10 +1,8 @@
 import { User } from "../models/user.js";
-
 import { sendWelcomeMailMessage } from "../middlewares/sendMail.js";
-
 import { registerSchema } from "../middlewares/validator.js";
-
 import { doHash } from "../utilities/passwordHashing.js";
+import crypto from "crypto";
 
 //Created User Registration Function
 export const registerStudent = async (req, res) => {
@@ -20,31 +18,30 @@ export const registerStudent = async (req, res) => {
     });
 
     if (error) {
-      return res
-        .status(400)
-        .json({ success: false, message: error.details[0].message });
+      return res.status(400).json({ success: false, message: error.details[0].message });
     }
 
-    // Check for existing email
-    const existingEmail = await User.findOne({ email });
+    // Check if user already exists
+    const [existingEmail, existingPhoneNumber] = await Promise.all([
+      User.findOne({ email }),
+      User.findOne({ phoneNumber }),
+    ]);
+
     if (existingEmail) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Email already exists" });
+      return res.status(400).json({ success: false, message: "Email already exists" });
     }
 
-    // Check for existing phone number
-    const existingPhoneNumber = await User.findOne({ phoneNumber });
     if (existingPhoneNumber) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Phone number already exists" });
+      return res.status(400).json({ success: false, message: "Phone number already exists" });
     }
 
     // Hash password
-    const passwordHash = await doHash(password, 12); // Consider lowering to 10-12 rounds
+    const passwordHash = await doHash(password, 12);
 
-    // Save user to DB
+    // Generate verification token
+    const token = crypto.randomBytes(32).toString("hex");
+
+    // Save user
     const student = new User({
       firstName,
       lastName,
@@ -52,21 +49,26 @@ export const registerStudent = async (req, res) => {
       phoneNumber,
       password: passwordHash,
       role: "student",
+      verificationToken: token, // save it in DB
+      isVerified: false,        // mark unverified initially
     });
 
     await student.save();
 
-    // Send fast response
-    res.status(200).json({ success: true, message: "Registration successful" });
+    // Create verify URL
+    const verifyUrl = `https://builddev.academy/verify?token=${token}`;
 
-    // Send welcome email in the background
-    sendWelcomeMailMessage(email, `${firstName} ${lastName}`)
-      .then(() => console.log("Welcome email sent"))
-      .catch(err => console.error("Failed to send email:", err));
+    // Send welcome + verification email
+    await sendWelcomeMailMessage(email, firstName, lastName, verifyUrl);
 
+    return res.status(200).json({
+      success: true,
+      message: "Registration successful. Please check your email to verify your account.",
+      token: token,
+    });
   } catch (error) {
-    console.error("Registration error:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    console.error("❌ Registration error:", error);
+    return res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
