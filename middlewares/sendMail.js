@@ -35,12 +35,10 @@ export const sendWelcomeMailMessage = async (email, firstName, lastName, verifyU
               To get started, please verify your email address by clicking the button below:
             </p>
             <div style="margin: 30px 0; text-align: center;">
-              <a href="${verifyUrl}"
-                target="_blank"
-                rel="noopener noreferrer"
-                style="background-color: #4CAF50; color: white; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 5px; display: inline-block;">
-                Verify My Account
-              </a>
+              <p style="font-size: 16px; color: #555; line-height: 1.6;">
+                Click on the link below to verify your account, 
+              </p>
+              ${verifyUrl}
             </div>
             <p style="font-size: 16px; color: #555; line-height: 1.6;">
               Once verified, you’ll be able to explore our platform, enroll in courses, and start building your tech career.
