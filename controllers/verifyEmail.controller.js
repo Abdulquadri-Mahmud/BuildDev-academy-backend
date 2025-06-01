@@ -14,9 +14,13 @@ export const verifyEmail = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid or expired verification token." });
     }
 
+    if (user.isVerified) {
+      return res.status(400).json({ success: false, message: "Email already verified." });
+    }
+
     user.isVerified = true;
     user.verificationToken = undefined;
-    
+
     await user.save();
 
     return res.status(200).json({ success: true, message: "✅ Email successfully verified. You can now log in." });
