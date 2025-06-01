@@ -27,11 +27,12 @@ export const verifyEmail = async (req, res) => {
       });
     }
 
+    
     user.isVerified = true;
-    // user.verificationToken = undefined;
-
+    user.verificationToken = undefined;
+    
     await user.save();
-
+    
     return res.status(200).json({
       success: true,
       message: "Email successfully verified. You can now log in.",
