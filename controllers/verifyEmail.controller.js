@@ -28,7 +28,7 @@ export const verifyEmail = async (req, res) => {
     }
 
     user.isVerified = true;
-    user.verificationToken = undefined;
+    // user.verificationToken = undefined;
 
     await user.save();
 
