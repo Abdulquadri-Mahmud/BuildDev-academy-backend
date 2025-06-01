@@ -48,6 +48,7 @@ const userSchema = mongoose.Schema(
 
     verificationToken: {
       type: String,
+      default: false,
     },
 
     courses: [
