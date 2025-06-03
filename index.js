@@ -43,6 +43,7 @@ app.get("/",(req, res,) => {
 
 //Routes
 app.use("/api/registration", studentRoute);
+app.use("/api/user", studentRoute);
 app.use("/api/make-payment", paymentRoute);
 app.use("/api/user", verifyUserEmail);
 app.use("/api/user", loginRoute);

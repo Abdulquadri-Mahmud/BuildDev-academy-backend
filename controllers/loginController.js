@@ -52,7 +52,7 @@ export const login = async (req, res) => {
         httpOnly: process.env.NODE_ENV === "production",
         secure: process.env.NODE_ENV === "production",
       })
-      .json({ success: true, token, message: "Login successful" });
+      .json({ success: true, token, message: "Login successful!", data: existingUser });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server timeout" });

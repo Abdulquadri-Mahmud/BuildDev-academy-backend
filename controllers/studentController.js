@@ -119,6 +119,7 @@ export const getAllRegisteredStudent = async () => {
 //Get Studen Details By Id
 export const getStudentById = async (req, res) => {
   const { id } = req.param;
+  
   try {
     const student = await User.findOne({ id })
       .select("-password")
