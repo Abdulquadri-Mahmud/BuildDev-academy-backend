@@ -46,14 +46,16 @@ export const login = async (req, res) => {
       },
       process.env.TOKEN_SECRET
     );
-    
+
+    const { password: pass, ...rest } = existingUser._doc;
+
     res
       .cookie("Authorization", "Bearer" + token, {
         expires: new Date(Date.now() + 8 * 3600000),
         httpOnly: process.env.NODE_ENV === "production",
         secure: process.env.NODE_ENV === "production",
       })
-      .json({ success: true, token, message: "Login successful!", data: existingUser });
+      .json({ success: true, token, message: "Login successful!", data: rest });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server timeout" });
