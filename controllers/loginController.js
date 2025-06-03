@@ -46,6 +46,7 @@ export const login = async (req, res) => {
       },
       process.env.TOKEN_SECRET
     );
+    
     res
       .cookie("Authorization", "Bearer" + token, {
         expires: new Date(Date.now() + 8 * 3600000),
