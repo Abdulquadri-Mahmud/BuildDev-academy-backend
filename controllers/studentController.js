@@ -56,7 +56,7 @@ export const registerStudent = async (req, res) => {
     await student.save();
 
     // Create verify URL
-    const verifyUrl = `https://dev-dynamos.onrender.com/verify-email?token=${token}`;
+    const verifyUrl = `https://samka-tech.vercel.app/verify-email?token=${token}`;
 
     // Send welcome + verification email
     await sendWelcomeMailMessage(email, firstName, lastName, verifyUrl);
